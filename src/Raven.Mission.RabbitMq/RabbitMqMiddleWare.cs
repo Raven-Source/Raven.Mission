@@ -19,7 +19,7 @@ namespace Raven.Mission.RabbitMq
         private readonly IDataSerializer _serializer;
         private readonly object _lockObj = new object();
         private readonly RabbitMqConfig _config;
-        private IModel _channel;
+        private volatile IModel _channel;
 
         internal RabbitMqMiddleWare(IDataSerializer serializer, RabbitMqConfig config)
         {
