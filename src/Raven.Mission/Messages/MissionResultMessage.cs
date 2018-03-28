@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Raven.Mission.Messages
 {
-    public class MissionResultMessage
+    public class MissionResultMessage<T>:MissionMessage
     {
-        public string MissionId { get; set; }
-
-        public object Result { get; set; }
+        /// <summary>
+        /// 响应内容 json字符串
+        /// </summary>
+        public T Result { get; set; }
     }
 }

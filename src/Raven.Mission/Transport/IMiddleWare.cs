@@ -10,8 +10,9 @@ namespace Raven.Mission.Transport
     {
         Task PublishAsync<T>(string channel, T message);
 
-        Task SubscribeAsync<T>(string channel, Action<T> handler);
+        Task SubscribeAsync<T>(string channel, Func<T,bool> handler);
 
         Task UnsubscribeAsync(string channel);
+        Task StopAsync();
     }
 }

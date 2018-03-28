@@ -17,7 +17,7 @@ namespace Raven.Mission
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="messageMiddle"></param>
+        /// <param name="middleWare"></param>
         public Commander(IMiddleWare middleWare)
         {
             this.middleWare = middleWare;
@@ -46,6 +46,7 @@ namespace Raven.Mission
         /// <typeparam name="TMessage"></typeparam>
         /// <param name="missionId"></param>
         /// <param name="mission"></param>
+        /// <param name="taskContinue"></param>
         public void AsyncExecuteMission<TMessage>(string missionId, Task<TMessage> mission, out Task taskContinue)
         {
             Action<Task<TMessage>> a = async (t) =>
@@ -68,10 +69,7 @@ namespace Raven.Mission
         {
             TaskCompletionSource<TMessage> taskCompletion = new TaskCompletionSource<TMessage>();
 
-            await middleWare.SubscribeAsync<TMessage>(missionId, msg =>
-            {
-                taskCompletion.TrySetResult(msg);
-            }).ConfigureAwait(false);
+            await middleWare.SubscribeAsync<TMessage>(missionId, msg => taskCompletion.TrySetResult(msg)).ConfigureAwait(false);
 
             try
             {

@@ -1,9 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Mission", "Raven.Mission\Raven.Mission.csproj", "{2FC71DC2-0121-4459-A9EC-4893549A1E90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Mission", "Raven.Mission\Raven.Mission.csproj", "{2FC71DC2-0121-4459-A9EC-4893549A1E90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Mission.RabbitMq", "Raven.Mission.RabbitMq\Raven.Mission.RabbitMq.csproj", "{1BAE27F7-C30C-4C52-BD4F-F5C1E5BBE68E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8491EB27-2EA5-495B-87B5-C4CC6D67EB15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Mission.ServerDemo", "test\Raven.Mission.ServerDemo\Raven.Mission.ServerDemo.csproj", "{0C42905F-E752-4187-A348-314FD04070C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Mission.FrameworkTest", "test\Raven.Mission.FrameworkTest\Raven.Mission.FrameworkTest.csproj", "{DCC91DF5-0A0E-402E-93CC-2530791426D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Mission.ClientDemo", "test\Raven.Mission.ClientDemo\Raven.Mission.ClientDemo.csproj", "{DE0213EF-1094-4867-832E-96D0D14828AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +25,30 @@ Global
 		{2FC71DC2-0121-4459-A9EC-4893549A1E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FC71DC2-0121-4459-A9EC-4893549A1E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FC71DC2-0121-4459-A9EC-4893549A1E90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BAE27F7-C30C-4C52-BD4F-F5C1E5BBE68E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BAE27F7-C30C-4C52-BD4F-F5C1E5BBE68E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BAE27F7-C30C-4C52-BD4F-F5C1E5BBE68E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BAE27F7-C30C-4C52-BD4F-F5C1E5BBE68E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C42905F-E752-4187-A348-314FD04070C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C42905F-E752-4187-A348-314FD04070C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C42905F-E752-4187-A348-314FD04070C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C42905F-E752-4187-A348-314FD04070C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCC91DF5-0A0E-402E-93CC-2530791426D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCC91DF5-0A0E-402E-93CC-2530791426D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCC91DF5-0A0E-402E-93CC-2530791426D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCC91DF5-0A0E-402E-93CC-2530791426D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE0213EF-1094-4867-832E-96D0D14828AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE0213EF-1094-4867-832E-96D0D14828AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE0213EF-1094-4867-832E-96D0D14828AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE0213EF-1094-4867-832E-96D0D14828AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0C42905F-E752-4187-A348-314FD04070C5} = {8491EB27-2EA5-495B-87B5-C4CC6D67EB15}
+		{DCC91DF5-0A0E-402E-93CC-2530791426D6} = {8491EB27-2EA5-495B-87B5-C4CC6D67EB15}
+		{DE0213EF-1094-4867-832E-96D0D14828AD} = {8491EB27-2EA5-495B-87B5-C4CC6D67EB15}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DB7626D6-C257-4E59-AAC6-9A55467C14E9}

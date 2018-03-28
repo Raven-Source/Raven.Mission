@@ -6,10 +6,18 @@ using System.Threading.Tasks;
 
 namespace Raven.Mission.Messages
 {
+    /// <summary>
+    /// 请求参数
+    /// </summary>
     public class MissionMessage
     {
-        public string MissionId { get; set; }
-
-
+        /// <summary>
+        /// 消息ID
+        /// </summary>
+        public int MissionId { get; set; }
+        /// <summary>
+        /// 响应队列名称
+        /// </summary>
+        public string ReplyQueue { get; set; }
     }
 }
