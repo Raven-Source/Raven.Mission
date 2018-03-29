@@ -3,17 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raven.Mission.Abstract;
+using Raven.Mission.Client;
 using Raven.Mission.Server;
 using Raven.Mission.Transport;
 using Raven.Serializer;
 
 namespace Raven.Mission.Factories
 {
-    public static class MissionServerFactory
+    public static class MissionFactory
     {
-        public static MissionServer Create(IMiddleWare middleWare,IDataSerializer serializer)
+        /// <summary>
+        /// 创建服务端
+        /// </summary>
+        /// <returns></returns>
+        public static IMissionServer CreateServer()
         {
-            return new MissionServer(middleWare,serializer);
+            return new MissionServer();
+        }
+        /// <summary>
+        /// 创建客户端
+        /// </summary>
+        /// <returns></returns>
+        public static IMissionClient CreateClient()
+        {
+            return new MissionClient();
         }
     }
 }

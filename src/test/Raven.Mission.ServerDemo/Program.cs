@@ -5,6 +5,7 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
+using Raven.Mission.Abstract;
 using Raven.Mission.Factories;
 using Raven.Mission.RabbitMq;
 using Raven.Mission.Server;
@@ -18,12 +19,9 @@ namespace Raven.Mission.ServerDemo
     {
         static void Main(string[] args)
         {
-
-            var serializer = SerializerFactory.Create(SerializerType.NewtonsoftJson);
-            var queue = MiddleWareFactory.Instance.CreateRabbit(new RabbitMqConfig("amqp://127.0.0.1"), serializer);
-            var server = MissionServerFactory.Create(queue,serializer);
+            var config = new RabbitMissionConfig("amqp://127.0.0.1");
+            var server = MissionFactory.CreateServer().UseRabbit(config);
             Container.Server = server;
-            //GCSettings.LatencyMode = GCLatencyMode.LowLatency;
             using (WebApp.Start<Startup>(url: "http://localhost:9008/"))
             {
                 Console.WriteLine("host:{0}", "http://localhost:9008/");
@@ -39,6 +37,6 @@ namespace Raven.Mission.ServerDemo
         /// <summary>
         /// DI 懒得详写
         /// </summary>
-        public static MissionServer Server { get; set; }
+        public static IMissionServer Server { get; set; }
     }
 }

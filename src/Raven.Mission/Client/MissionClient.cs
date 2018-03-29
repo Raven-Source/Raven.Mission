@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Raven.Mission.Abstract;
 using Raven.Mission.Messages;
 using Raven.Mission.Transport;
 using Raven.Serializer;
 
 namespace Raven.Mission.Client
 {
-    public class MissionClient
+    internal class MissionClient:IMissionClient
     {
         /// <summary>
         /// 结果task字典 缓存消息请求的响应结果类型，响应结果任务，key为消息id
@@ -19,19 +20,51 @@ namespace Raven.Mission.Client
         private readonly ConcurrentDictionary<int, Tuple<Type, TaskCompletionSource<MissionMessage>>> _resultDic =
             new ConcurrentDictionary<int, Tuple<Type, TaskCompletionSource<MissionMessage>>>();
 
-        private readonly string _queueId;
+        private  string _queueId;
         private volatile bool _subscribed = false;
         private readonly object _lockObj = new object();
 
-        private readonly IMiddleWare _messagequeue;
-        private readonly IDataSerializer _serializer;
+        private  IMiddleWare _messagequeue;
+        private  IDataSerializer _serializer;
         private int _msgId=0;
-        public MissionClient(IMiddleWare queue, IDataSerializer serializer)
+        private IHttpClient _client;
+
+        public async Task<TResult> ExcuteAsync<TResult, TRequest>( string resource, TRequest request, int timeout)
+            where TRequest : MissionMessage
         {
-            //todo generator queue_id
+            if (_messagequeue == null || _serializer == null||_client==null)
+            {
+                throw new Exception("请先注入中间件、序列化器及Http请求客户端");
+            }
+
+            if (!_subscribed)
+            {
+                throw new Exception("请先执行IMissionClient.StartSubscribe()方法");
+            }
+            request.ReplyQueue = _queueId;
+            request.MissionId = Interlocked.Increment(ref _msgId);
+            var task = new TaskCompletionSource<MissionMessage>();
+            _resultDic.TryAdd(request.MissionId,
+                new Tuple<Type, TaskCompletionSource<MissionMessage>>(typeof(MissionResultMessage<TResult>), task));
+            //发送请求
+            await _client.SendAsync(resource, request);
+            MissionMessage result;
+            //等待响应
+            if (timeout > 0)
+            {
+                result = await task.Task.WithTimeout(TimeSpan.FromSeconds(timeout)).ConfigureAwait(false);
+            }
+            else
+            {
+                result = await task.Task.ConfigureAwait(false);
+            }
+
+            return ((MissionResultMessage<TResult>)result).Result;
+        }
+
+        public void StartSubscribe()
+        {
             _queueId = Guid.NewGuid().ToString("N");
-            _messagequeue = queue;
-            _serializer = serializer;
             if (!_subscribed)
             {
                 lock (_lockObj)
@@ -46,28 +79,9 @@ namespace Raven.Mission.Client
             }
         }
 
-        public async Task<TResult> ExcuteAsync<TResult, TRequest>(IHttpClient client, string resource, TRequest request, int timeout)
-            where TRequest : MissionMessage
+        public void UseHttpClient(string host)
         {
-            request.ReplyQueue = _queueId;
-            request.MissionId = Interlocked.Increment(ref _msgId);
-            var task = new TaskCompletionSource<MissionMessage>();
-            _resultDic.TryAdd(request.MissionId,
-                new Tuple<Type, TaskCompletionSource<MissionMessage>>(typeof(MissionResultMessage<TResult>), task));
-            //发送请求
-            await client.SendAsync(resource, request);
-            MissionMessage result;
-            //等待响应
-            if (timeout > 0)
-            {
-                result = await task.Task.WithTimeout(TimeSpan.FromSeconds(timeout)).ConfigureAwait(false);
-            }
-            else
-            {
-                result = await task.Task.ConfigureAwait(false);
-            }
-
-            return ((MissionResultMessage<TResult>)result).Result;
+            _client = new HttpClientWrapper(host);
         }
 
         /// <summary>
@@ -91,11 +105,19 @@ namespace Raven.Mission.Client
             return false;
         }
 
-        public async Task StopAsync()
+      
+
+
+        public void Dispose()
         {
-            await _messagequeue.UnsubscribeAsync(_queueId).ConfigureAwait(false);
+            _messagequeue.UnsubscribeAsync(_queueId).Wait();
+            _client.Dispose();
         }
 
-
+        public void UseMiddleWare(IMiddleWare middleWare,IDataSerializer serializer)
+        {
+            _messagequeue = middleWare;
+            _serializer = serializer;
+        }
     }
 }

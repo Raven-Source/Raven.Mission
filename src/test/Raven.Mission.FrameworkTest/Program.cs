@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Raven.Mission.Client;
 using Raven.Mission.ClientDemo;
 using Raven.Mission.RabbitMq;
+using Raven.Mission.Transport;
 
 namespace Raven.Mission.FrameworkTest
 {
@@ -15,7 +16,7 @@ namespace Raven.Mission.FrameworkTest
     {
         static void Main(string[] args)
         {
-            DemoClient.Init("http://localhost:9008/",new RabbitMqConfig(uri:"amqp://127.0.0.1",autoDelete:true));
+            DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1","http://localhost:9008/"));
             var list=new List<Task>();
 
             //GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;

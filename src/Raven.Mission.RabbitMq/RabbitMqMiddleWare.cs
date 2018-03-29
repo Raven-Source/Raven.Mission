@@ -18,12 +18,12 @@ namespace Raven.Mission.RabbitMq
         private readonly ConnectionFactory _factory;
         private readonly IDataSerializer _serializer;
         private readonly object _lockObj = new object();
-        private readonly RabbitMqConfig _config;
+        private readonly RabbitMissionConfig _config;
         private volatile IModel _channel;
 
-        internal RabbitMqMiddleWare(IDataSerializer serializer, RabbitMqConfig config)
+        internal RabbitMqMiddleWare(RabbitMissionConfig config)
         {
-            _serializer = serializer;
+            _serializer = SerializerFactory.Create(config.SerializerType);
             _config = config;
             _factory = new ConnectionFactory { Uri = new Uri(config.Uri) };
         }

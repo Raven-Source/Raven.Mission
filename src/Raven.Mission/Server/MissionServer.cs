@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using Raven.Mission.Abstract;
 using Raven.Mission.Messages;
 using Raven.Mission.Transport;
 using Raven.Serializer;
@@ -13,22 +14,12 @@ namespace Raven.Mission.Server
     /// <summary>
     /// 服务端
     /// </summary>
-    public  class MissionServer:IDisposable
+    internal  class MissionServer:IMissionServer
     {
         private  IMiddleWare _queue;
-        private readonly IDataSerializer _serializer;
+        private  IDataSerializer _serializer;
 
-        /// <summary>
-        /// 初始化异步服务端
-        /// </summary>
-        /// <param name="queue">中间件</param>
-        /// <param name="serializer"></param>
-        public   MissionServer(IMiddleWare queue, IDataSerializer serializer)
-        {
-            _queue = queue;
-            _serializer = serializer;
-        }
-
+        
         /// <summary>
         /// 异步执行任务
         /// </summary>
@@ -37,6 +28,10 @@ namespace Raven.Mission.Server
         /// <param name="mission"></param>
         public  void AsyncExecuteMission<TMessage>(MissionMessage request, Task<TMessage> mission) 
         {
+            if (_queue == null || _serializer == null)
+            {
+                throw new Exception("请先注入中间件及序列化器");
+            }
             Action<Task<TMessage>> a = async (t) =>
             {
                 TMessage message = await t;
@@ -58,6 +53,13 @@ namespace Raven.Mission.Server
         public  void Dispose()
         {
             _queue.StopAsync().Wait();
+        }
+
+
+        public void UseMiddleWare(IMiddleWare middleWare,IDataSerializer serializer)
+        {
+            _queue = middleWare;
+            _serializer = serializer;
         }
     }
 }
