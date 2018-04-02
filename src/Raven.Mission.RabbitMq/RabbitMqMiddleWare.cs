@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
 using Raven.Mission.Transport;
 using RabbitMQ.Client;
@@ -45,16 +44,15 @@ namespace Raven.Mission.RabbitMq
 
         private IModel GetChannel()
         {
-            // return GetConnection().CreateModel();
-            if (_channel != null)
+            if (_channel != null && _channel.IsOpen)
             {
                 return _channel;
             }
-
             lock (_lockObj)
             {
-                if (_channel == null)
+                if (_channel == null || _channel.IsClosed)
                 {
+                    _channel?.Dispose();
                     _channel = GetConnection().CreateModel();
                 }
             }
@@ -62,9 +60,16 @@ namespace Raven.Mission.RabbitMq
         }
         public Task PublishAsync<T>(string channel, T message)
         {
-            var ch = GetChannel();
-            var body = _serializer.Serialize(message);
-            ch.BasicPublish("", channel, null, body);
+            try
+            {
+                var ch = GetChannel();
+                var body = _serializer.Serialize(message);
+                ch.BasicPublish("", channel, null, body);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + e.Message);
+            }
             return Task.FromResult(0);
 
         }
@@ -76,12 +81,20 @@ namespace Raven.Mission.RabbitMq
             var consumer = new EventingBasicConsumer(ch);
             consumer.Received += (model, ea) =>
             {
-                var body = ea.Body;
-                var message = _serializer.Deserialize<T>(body);
-                if (handler(message) && _config.NeedAck)
+                try
                 {
-                    var consume = (EventingBasicConsumer)model;
-                    consume.Model.BasicAck(ea.DeliveryTag, false);
+
+                    var body = ea.Body;
+                    var message = _serializer.Deserialize<T>(body);
+                    if (handler(message) && _config.NeedAck)
+                    {
+                        var consume = (EventingBasicConsumer)model;
+                        consume.Model.BasicAck(ea.DeliveryTag, false);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + e.Message);
                 }
             };
             if (_config.NeedAck)
@@ -92,13 +105,12 @@ namespace Raven.Mission.RabbitMq
 
         public Task UnsubscribeAsync(string channel)
         {
-            _connection?.Close();
-            return Task.FromResult(0);
+            return StopAsync();
         }
 
         public Task StopAsync()
         {
-            _channel.Dispose();
+            _channel?.Dispose();
             _connection?.Close();
             return Task.FromResult(0);
         }

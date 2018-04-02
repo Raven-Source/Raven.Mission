@@ -1,33 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Raven.Mission.ClientDemo;
-using Raven.Mission.Factories;
-using Raven.Mission.RabbitMq;
-using Raven.Mission.Server;
+using Raven.Mission.TestApi;
 
 namespace Raven.Mission.ServerDemo
 {
     public class OrderController:ApiController
     {
         
-        [HttpGet]
-        public string Test()
+        [HttpPost]
+        public Task<string> Test()
         {
-            return "test";
+            Task.Run(async ()=> {
+                await Task.Delay(3000);
+                Console.WriteLine( "done");
+            });
+            return Task.FromResult("test");
         }
         [HttpPost]
-        public Task<int> GetOrder(DemoRequest request)
+        public int GetOrder(DemoRequest request)
         {
-            Container.Server.AsyncExecuteMission(request,Task.FromResult(new DemoResponse
+            Container.Server.AsyncExecuteMission(request, Task.FromResult(new DemoResponse
             {
                 Id = request.OrderNo,
                 Name = "demo"
             }));
-            return Task.FromResult(0);
+            return 0;
         }
     }
 }

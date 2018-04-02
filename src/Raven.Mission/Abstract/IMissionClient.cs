@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Raven.Mission.Messages;
-using Raven.Mission.Transport;
 
 namespace Raven.Mission.Abstract
 {
@@ -20,7 +15,7 @@ namespace Raven.Mission.Abstract
         /// <param name="request"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        Task<TResult> ExcuteAsync<TResult, TRequest>(string resource, TRequest request,int timeout) where TRequest : MissionMessage;
+        Task<TResult> ExcuteAsync<TResult, TRequest>(string resource, TRequest request,int timeout) where TRequest : IMissionMessage;
         /// <summary>
         /// 开始监听响应消息
         /// </summary>

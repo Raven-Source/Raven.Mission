@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net451;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Raven.Serializer.WithMessagePack" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Raven.Mission.RabbitMq\Raven.Mission.RabbitMq.csproj" />
+    <ProjectReference Include="..\..\Raven.Mission\Raven.Mission.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -32,17 +32,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MessagePack, Version=1.7.2.0, Culture=neutral, PublicKeyToken=b4a0369545f0a1be, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MessagePack.1.7.2\lib\net45\MessagePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net40\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RabbitMQ.Client.5.0.1\lib\net451\RabbitMQ.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Serializer, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Raven.Serializer.2.0.3\lib\net45\Raven.Serializer.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Serializer.WithMessagePack, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Raven.Serializer.WithMessagePack.2.0.3\lib\net45\Raven.Serializer.WithMessagePack.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Serializer.WithNewtonsoft, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Raven.Serializer.WithNewtonsoft.2.0.3\lib\net45\Raven.Serializer.WithNewtonsoft.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,10 +77,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Raven.Mission.ClientDemo\Raven.Mission.ClientDemo.csproj">
-      <Project>{d8d63d45-cf5c-4b0d-8070-7d2e4a084ac1}</Project>
-      <Name>Raven.Mission.ClientDemo</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Raven.Mission.RabbitMq\Raven.Mission.RabbitMq.csproj">
       <Project>{1bae27f7-c30c-4c52-bd4f-f5c1e5bbe68e}</Project>
       <Name>Raven.Mission.RabbitMq</Name>
@@ -70,6 +84,10 @@
     <ProjectReference Include="..\..\Raven.Mission\Raven.Mission.csproj">
       <Project>{2fc71dc2-0121-4459-a9ec-4893549a1e90}</Project>
       <Name>Raven.Mission</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Raven.Mission.TestApi\Raven.Mission.TestApi.csproj">
+      <Project>{2aa71399-51a9-45ae-b534-30f42bf9d477}</Project>
+      <Name>Raven.Mission.TestApi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
