@@ -13,34 +13,29 @@ namespace Raven.Mission.FrameworkTest
 {
     class Program
     {
-       
+
         static void Main(string[] args)
         {
-            DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1", "http://localhost:9008/", serializerType: SerializerType.MessagePack),new Logger());
+            //DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1", "http://localhost:9008/", serializerType: SerializerType.MessagePack), new Logger());
+            DemoClient.Init("rabbit",new Logger());
             while (true)
             {
                 var list = new List<Task>();
-                try
+                var watch = new Stopwatch();
+                watch.Start();
+                for (var i = 0; i < 1000; i++)
                 {
-                    var watch = new Stopwatch();
-                    watch.Start();
-                    for (var i = 0; i < 1000; i++)
+                    var request = new DemoRequest
                     {
-                        var request = new DemoRequest
-                        {
-                            OrderNo = i.ToString(),
-                        };
-                        list.Add(Task.Run(async () => await DemoClient.Instace.DemoInvoke(request)));
-                    }
-
-                    Task.WaitAll(list.ToArray());
-                    watch.Stop();
-                    Console.WriteLine(watch.ElapsedMilliseconds + "ms");
+                        OrderNo = i.ToString(),
+                    };
+                    list.Add(Task.Run(async () => await DemoClient.Instace.DemoInvoke(request)));
                 }
-                catch (Exception e)
-                {
 
-                }
+                Task.WaitAll(list.ToArray());
+                watch.Stop();
+                Console.WriteLine(watch.ElapsedMilliseconds + "ms");
+
                 Task.Delay(200).Wait();
 
             }
@@ -56,10 +51,10 @@ namespace Raven.Mission.FrameworkTest
 
     class Logger : ILogger
     {
-        public void LogError(Exception ex,object obj)
+        public void LogError(Exception ex, object obj)
         {
             Console.WriteLine(ex);
         }
-        
+
     }
 }

@@ -10,7 +10,6 @@ namespace Raven.Mission.Abstract
         /// </summary>
         /// <typeparam name="TResult">返回结果类型</typeparam>
         /// <typeparam name="TRequest">请求参数类型</typeparam>
-        /// <param name="client"></param>
         /// <param name="resource"></param>
         /// <param name="request"></param>
         /// <param name="timeout"></param>

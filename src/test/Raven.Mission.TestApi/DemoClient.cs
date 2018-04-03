@@ -21,6 +21,11 @@ namespace Raven.Mission.TestApi
             _democlient=new DemoClient();
             _missionClient = MissionFactory.CreateClient().UseRabbit(config,logger);
         }
+        public static void Init(string config, ILogger logger)
+        {
+            _democlient = new DemoClient();
+            _missionClient = MissionFactory.CreateClient().UseRabbit(config, logger);
+        }
 
         public async Task<DemoResponse> DemoInvoke(DemoRequest request,int timeout=30)
         {

@@ -16,4 +16,10 @@
     <ProjectReference Include="..\Raven.Mission.TestApi\Raven.Mission.TestApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="app.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

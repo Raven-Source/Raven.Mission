@@ -14,8 +14,8 @@ namespace Raven.Mission.ServerDemo
         {
 
             //ServicePointManager.DefaultConnectionLimit = 10000;
-            var config = new RabbitMissionConfig("amqp://127.0.0.1",serializerType:SerializerType.MessagePack);
-            var server = MissionFactory.CreateServer().UseRabbit(config,new Logger());
+            //var config = new RabbitMissionConfig("amqp://127.0.0.1",serializerType:SerializerType.MessagePack);
+            var server = MissionFactory.CreateServer().UseRabbit("rabbit", new Logger());
             Container.Server = server;
             using (WebApp.Start<Startup>(url: "http://localhost:9008/"))
             {

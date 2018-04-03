@@ -19,7 +19,15 @@
 
 
   <ItemGroup>
+    <Reference Include="System.Configuration" Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net451|AnyCPU'" />
     <Reference Include="System.Net.Http" Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net451|AnyCPU'" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json">
+      <Version>2.0.1</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

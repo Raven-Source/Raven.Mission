@@ -15,7 +15,8 @@ namespace Ravent.Mission.NetCoreTest
     {
         static void Main(string[] args)
         {
-            DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1", "http://localhost:9008/",serializerType:SerializerType.MessagePack), new Logger());
+            //DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1", "http://localhost:9008/",serializerType:SerializerType.MessagePack), new Logger());
+            DemoClient.Init("rabbit", new Logger());
             //TaskScheduler scheduler = TaskScheduler.Current;
             while (true)
             {
