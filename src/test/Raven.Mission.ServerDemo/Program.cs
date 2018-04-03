@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Microsoft.Owin.Hosting;
 using Raven.Mission.Abstract;
 using Raven.Mission.Factories;
@@ -11,6 +12,8 @@ namespace Raven.Mission.ServerDemo
     {
         static void Main(string[] args)
         {
+
+            //ServicePointManager.DefaultConnectionLimit = 10000;
             var config = new RabbitMissionConfig("amqp://127.0.0.1",serializerType:SerializerType.MessagePack);
             var server = MissionFactory.CreateServer().UseRabbit(config,new Logger());
             Container.Server = server;
@@ -33,14 +36,9 @@ namespace Raven.Mission.ServerDemo
     }
     class Logger : ILogger
     {
-        public void Error(Exception ex)
+        public void LogError(Exception ex, object obj)
         {
             Console.WriteLine(ex);
-        }
-
-        public void Error(string error)
-        {
-            Console.WriteLine(error);
         }
     }
 }

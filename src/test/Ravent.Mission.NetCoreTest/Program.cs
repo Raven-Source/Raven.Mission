@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Raven.Mission.RabbitMq;
 using Raven.Mission.TestApi;
-using System.Net.Http;
 using Raven.Mission.Abstract;
+using Raven.Serializer;
 
 namespace Ravent.Mission.NetCoreTest
 {
@@ -14,37 +15,29 @@ namespace Ravent.Mission.NetCoreTest
     {
         static void Main(string[] args)
         {
-            DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1", "http://localhost:9008/"),new Logger());
-            var list = new List<Task>();
+            DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1", "http://localhost:9008/",serializerType:SerializerType.MessagePack), new Logger());
+            //TaskScheduler scheduler = TaskScheduler.Current;
             while (true)
             {
                 //Console.WriteLine("press any key to start test,exit to exit...");
                 //var command = Console.ReadLine();
                 //if (command == "exit")
                 //    break;
+                var list = new List<Task>();
                 var watch = new Stopwatch();
                 watch.Start();
-                try
+                for (var i = 0; i < 10000; i++)
                 {
-                    for (var i = 0; i < 1000; i++)
+                    var request = new DemoRequest
                     {
-                        var request = new DemoRequest
-                        {
-                            OrderNo = i.ToString(),
-                        };
-                        list.Add(Task.Run(async ()=>await DemoClient.Instace.DemoInvoke(request)));
-                        //list.Add(Task.Run(async ()=>await DoSomething()));
-                        //list.Add( DoSomething());
-                        //DemoClient.Instace.DemoInvoke(request).Wait();
-                        //list.Add(DemoClient.Instace.DemoInvoke(request));
-                    }
-
-                    Task.WaitAll(list.ToArray());
+                        OrderNo = i.ToString(),
+                    };
+                    //list.Add(Task.Factory.StartNew(async () => await DemoClient.Instace.DemoInvoke(request)));
+                    list.Add(DemoClient.Instace.DemoInvoke(request));
                 }
-                catch (Exception e)
-                {
 
-                }
+                Task.WaitAll(list.ToArray());
+
                 watch.Stop();
                 Console.WriteLine(watch.ElapsedMilliseconds + "ms");
                 Task.Delay(200).Wait();
@@ -52,31 +45,13 @@ namespace Ravent.Mission.NetCoreTest
             }
             DemoClient.Stop();
         }
-        static HttpClient httpClient = new HttpClient() { BaseAddress = new Uri("http://192.168.2.90:9008/") };
-        static async Task DoSomething()
-        {
-            try
-            {
-                var result = await httpClient.PostAsync("order/test",new StringContent("abc"));
-                //Console.WriteLine(result);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
 
-        }
     }
     class Logger : ILogger
     {
-        public void Error(Exception ex)
+        public void LogError(Exception ex, object obj)
         {
             Console.WriteLine(ex);
-        }
-
-        public void Error(string error)
-        {
-            Console.WriteLine(error);
         }
     }
 }

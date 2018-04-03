@@ -17,9 +17,9 @@ namespace Raven.Mission.FrameworkTest
         static void Main(string[] args)
         {
             DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1", "http://localhost:9008/", serializerType: SerializerType.MessagePack),new Logger());
-            var list = new List<Task>();
             while (true)
             {
+                var list = new List<Task>();
                 try
                 {
                     var watch = new Stopwatch();
@@ -56,14 +56,10 @@ namespace Raven.Mission.FrameworkTest
 
     class Logger : ILogger
     {
-        public void Error(Exception ex)
+        public void LogError(Exception ex,object obj)
         {
             Console.WriteLine(ex);
         }
-
-        public void Error(string error)
-        {
-            Console.WriteLine(error);
-        }
+        
     }
 }

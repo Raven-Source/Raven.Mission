@@ -22,11 +22,13 @@ namespace Raven.Mission.Transport
             _client.Dispose();
         }
 
-        public Task SendAsync<TRequest>(string resource, TRequest request)
+        public async Task SendAsync<TRequest>(string resource, TRequest request)
         {
             var msg = JsonConvert.SerializeObject(request);
-            var content = new StringContent(msg, Encoding.UTF8, "application/json");
-            return _client.PostAsync(resource, content); 
+            using (var content = new StringContent(msg, Encoding.UTF8, "application/json"))
+            {
+                await _client.PostAsync(resource, content);
+            }
         }
 
         

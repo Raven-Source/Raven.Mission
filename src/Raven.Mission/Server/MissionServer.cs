@@ -42,7 +42,7 @@ namespace Raven.Mission.Server
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e);
+                    _logger.LogError(e,null);
                 }
             };
             mission.ContinueWith(a).ConfigureAwait(false);

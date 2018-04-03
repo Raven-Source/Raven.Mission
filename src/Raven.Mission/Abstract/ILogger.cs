@@ -8,7 +8,6 @@ namespace Raven.Mission.Abstract
 {
     public interface ILogger
     {
-        void Error(Exception ex);
-        void Error(string error);
+        void LogError(Exception ex,object dataObj);
     }
 }
