@@ -13,9 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Mission.ServerDemo", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Mission.FrameworkTest", "test\Raven.Mission.FrameworkTest\Raven.Mission.FrameworkTest.csproj", "{DCC91DF5-0A0E-402E-93CC-2530791426D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ravent.Mission.NetCoreTest", "test\Ravent.Mission.NetCoreTest\Ravent.Mission.NetCoreTest.csproj", "{DA903AB1-82B7-4A73-BE19-23009D811A9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ravent.Mission.NetCoreTest", "test\Ravent.Mission.NetCoreTest\Ravent.Mission.NetCoreTest.csproj", "{DA903AB1-82B7-4A73-BE19-23009D811A9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Mission.TestApi", "test\Raven.Mission.TestApi\Raven.Mission.TestApi.csproj", "{2AA71399-51A9-45AE-B534-30F42BF9D477}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Mission.TestApi", "test\Raven.Mission.TestApi\Raven.Mission.TestApi.csproj", "{2AA71399-51A9-45AE-B534-30F42BF9D477}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

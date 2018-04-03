@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Raven.Mission.Abstract;
@@ -16,14 +17,17 @@ namespace Raven.Mission.FrameworkTest
 
         static void Main(string[] args)
         {
+            ServicePointManager.DefaultConnectionLimit = 100;
             //DemoClient.Init(new RabbitMissionConfig("amqp://127.0.0.1", "http://localhost:9008/", serializerType: SerializerType.MessagePack), new Logger());
             DemoClient.Init("rabbit",new Logger());
-            while (true)
+            var j = 0;
+            while (j<10000)
             {
+                j++;
                 var list = new List<Task>();
                 var watch = new Stopwatch();
                 watch.Start();
-                for (var i = 0; i < 1000; i++)
+                for (var i = 0; i < 10000; i++)
                 {
                     var request = new DemoRequest
                     {
@@ -34,19 +38,17 @@ namespace Raven.Mission.FrameworkTest
 
                 Task.WaitAll(list.ToArray());
                 watch.Stop();
-                Console.WriteLine(watch.ElapsedMilliseconds + "ms");
+                Console.WriteLine($"第{j}次，1000条请求耗时:{watch.ElapsedMilliseconds}ms");
 
                 Task.Delay(200).Wait();
 
             }
+
+            Console.WriteLine("一万次请求完成，按回车退出！");
+            Console.ReadLine();
             DemoClient.Stop();
         }
-        static Task DoSomething()
-        {
-            var id = Thread.CurrentThread.ManagedThreadId;
-            Console.WriteLine(id);
-            return Task.FromResult(0);
-        }
+      
     }
 
     class Logger : ILogger
@@ -57,4 +59,6 @@ namespace Raven.Mission.FrameworkTest
         }
 
     }
+
+   
 }

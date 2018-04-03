@@ -1,7 +1,7 @@
 {
   "rabbit": {
     "uri": "amqp://127.0.0.1",
-    "serverHost": "http://localhost:9008/",
+    "serverHost": "http://127.0.0.1:9008/",
     "serializerType": "MessagePack"
   }
 }

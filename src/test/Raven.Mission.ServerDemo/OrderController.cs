@@ -8,7 +8,7 @@ namespace Raven.Mission.ServerDemo
     public class OrderController:ApiController
     {
         
-        [HttpPost]
+        [HttpGet]
         public Task<string> Test()
         {
             Task.Run(async ()=> {

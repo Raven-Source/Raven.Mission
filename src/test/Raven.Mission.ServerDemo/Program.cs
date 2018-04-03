@@ -13,11 +13,12 @@ namespace Raven.Mission.ServerDemo
         static void Main(string[] args)
         {
 
-            //ServicePointManager.DefaultConnectionLimit = 10000;
+            //ServicePointManager.DefaultConnectionLimit = 100;
             //var config = new RabbitMissionConfig("amqp://127.0.0.1",serializerType:SerializerType.MessagePack);
             var server = MissionFactory.CreateServer().UseRabbit("rabbit", new Logger());
             Container.Server = server;
-            using (WebApp.Start<Startup>(url: "http://localhost:9008/"))
+            //ServicePointManager.DefaultConnectionLimit = 10;
+            using (WebApp.Start<Startup>(url: "http://127.0.0.1:9008/"))
             {
                 Console.WriteLine("host:{0}", "http://localhost:9008/");
                 Console.WriteLine("Press [enter] to quit...");
