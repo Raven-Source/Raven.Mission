@@ -66,7 +66,7 @@ namespace Raven.Mission.Client
             }
             catch (Exception e)
             {
-                _logger.LogError(e,null);
+                _logger?.LogError(e,null);
                 return default(TResult);
             }
             finally
