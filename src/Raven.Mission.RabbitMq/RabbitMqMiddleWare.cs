@@ -86,10 +86,15 @@ namespace Raven.Mission.RabbitMq
 
                     var body = ea.Body;
                     var message = _serializer.Deserialize<T>(body);
+                    var consume = (EventingBasicConsumer)model;
                     if (handler(message) && _config.NeedAck)
                     {
-                        var consume = (EventingBasicConsumer)model;
                         consume.Model.BasicAck(ea.DeliveryTag, false);
+                    }
+                    else
+                    {
+                        //退回消息，并让他重新分发
+                        consume.Model.BasicReject(ea.DeliveryTag, true);
                     }
                 }
                 catch (Exception e)
